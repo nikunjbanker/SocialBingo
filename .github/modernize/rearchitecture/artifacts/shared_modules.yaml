@@ -1,0 +1,78 @@
+modules:
+  - name: application-router
+    kind: utility
+    source_loc: "App.razor:1"
+    used_by_units: [bingo-home, counter-page, weather-page, not-found-page]
+    fields:
+      - name: Router
+        type: "Microsoft.AspNetCore.Components.Routing.Router"
+      - name: NotFoundPage
+        type: "System.Type (Pages.NotFound)"
+      - name: DefaultLayout
+        type: "System.Type (MainLayout)"
+    god_class: false
+    split_candidate: false
+    migration_strategy: copy
+    notes: "Central route dispatch, shared default layout, and unmatched-route destination."
+
+  - name: main-layout
+    kind: utility
+    source_loc: "Layout/MainLayout.razor:1"
+    used_by_units: [bingo-home, counter-page, weather-page, not-found-page]
+    fields:
+      - name: Body
+        type: "Microsoft.AspNetCore.Components.RenderFragment"
+      - name: NavMenu
+        type: "SocialBingo.Layout.NavMenu component"
+      - name: AboutLink
+        type: "Anchor to https://learn.microsoft.com/aspnet/core/"
+    god_class: false
+    split_candidate: false
+    migration_strategy: copy
+    notes: "Shared layout renders navigation and the current routed page."
+
+  - name: navigation-menu
+    kind: utility
+    source_loc: "Layout/NavMenu.razor:1"
+    used_by_units: [bingo-home, counter-page, weather-page, not-found-page]
+    fields:
+      - name: Bingo
+        type: "NavLink to /"
+      - name: Counter
+        type: "NavLink to /counter"
+      - name: Weather
+        type: "NavLink to /weather"
+    god_class: false
+    split_candidate: false
+    migration_strategy: copy
+    notes: "Shared navigation targets; its collapse state is local to the component."
+
+  - name: webassembly-host-page
+    kind: config
+    source_loc: "wwwroot/index.html:8"
+    used_by_units: [bingo-home, counter-page, weather-page, not-found-page]
+    fields:
+      - name: BaseHref
+        type: "string (/)"
+      - name: AppRoot
+        type: "HTML element (#app)"
+      - name: BlazorRuntimeScript
+        type: "fingerprinted Blazor WebAssembly bootstrap script"
+    god_class: false
+    split_candidate: false
+    migration_strategy: copy
+    notes: "Document shell and runtime bootstrap used by every client route."
+
+  - name: global-app-styles
+    kind: utility
+    source_loc: "wwwroot/css/app.css:1"
+    used_by_units: [bingo-home, counter-page, weather-page, not-found-page]
+    fields:
+      - name: ContentContainer
+        type: "CSS selector (.content)"
+      - name: PrimaryButton
+        type: "CSS selector (.btn-primary)"
+    god_class: false
+    split_candidate: false
+    migration_strategy: copy
+    notes: "Global stylesheet is loaded by the WebAssembly host page and styles the shared content region."

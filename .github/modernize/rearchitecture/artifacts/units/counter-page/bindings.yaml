@@ -1,0 +1,15 @@
+unit: counter-page
+bindings:
+  - type: route-declaration
+    name: "@page /counter"
+    source_loc: "Pages/Counter.razor:1"
+    target: "Pages.Counter"
+    must_appear_in_target: true
+    notes: "Routed using the shared App router and MainLayout."
+  - type: convention
+    name: "Blazor @onclick event binding"
+    source_loc: "Pages/Counter.razor:9"
+    target: "IncrementCount"
+    must_appear_in_target: true
+    notes: "Button event updates component-local state."
+runtime_config: []

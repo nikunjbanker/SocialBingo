@@ -1,0 +1,37 @@
+contracts:
+  - name: "Bingo game browser local-storage record"
+    unit: bingo-home
+    type: sdk
+    stability: must_preserve
+    source_loc: "Services/GameStateService.cs:60"
+    contract:
+      method: "Browser localStorage getItem/setItem"
+      path: "social-bingo.game-state.v1"
+      request: "JSON object { card: { tiles: [{ row, column, prompt, isSelected, isFree }] }, hasWon }"
+      response: "Serialized saved-game JSON string on get; void on set"
+      error: "JS interop failures become InvalidOperationException; malformed or invalid saved JSON becomes InvalidDataException"
+      auth: "Same-origin browser storage; no application authentication is configured"
+    target_contract:
+      method: "IJSRuntime.InvokeAsync<string?>/InvokeVoidAsync for localStorage.getItem/localStorage.setItem"
+      notes: "Preserve the versioned key and Web-default camelCase JSON shape so saved games restore across reloads."
+    semantic_divergence: []
+
+  - name: "Weather sample-data JSON asset"
+    unit: weather-page
+    type: file
+    stability: must_preserve
+    source_loc: "Pages/Weather.razor:44"
+    contract:
+      method: "HTTP GET issued by HttpClient.GetFromJsonAsync"
+      path: "sample-data/weather.json relative to the application base URL"
+      request: "None"
+      response: "JSON array of objects with date (ISO date), temperatureC (integer), and summary (string)"
+      error: "HTTP and JSON deserialization errors are not handled by the page; a null result leaves its loading branch active"
+      auth: "No authentication"
+    target_contract:
+      method: "Http.GetFromJsonAsync<WeatherForecast[]>(\"sample-data/weather.json\")"
+      notes: "This is a static wwwroot asset, not a configured backend service."
+    semantic_divergence:
+      - field: "date"
+        issue: "The JSON date is deserialized into DateOnly; retain ISO-date compatibility."
+        source_loc: "Pages/Weather.razor:52"

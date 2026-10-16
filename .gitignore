@@ -1,7 +1,7 @@
 # Build output
 bin/
 obj/
-artifacts/
+/artifacts/
 publish/
 
 # Visual Studio and local IDE state

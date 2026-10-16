@@ -1,0 +1,27 @@
+unit: weather-page
+side_effects:
+  - source_loc: "Pages/Weather.razor:44"
+    effect: "Fetches and deserializes the app-local weather JSON during component initialization."
+    must_preserve: true
+branches:
+  - source_loc: "Pages/Weather.razor:11"
+    condition: "forecasts is null."
+    behavior: "Render the Loading… message."
+    must_preserve: true
+  - source_loc: "Pages/Weather.razor:16"
+    condition: "forecasts is non-null."
+    behavior: "Render one table row per forecast, including local short date, Celsius, computed Fahrenheit, and summary."
+    must_preserve: true
+error_paths:
+  - source_loc: "Pages/Weather.razor:44"
+    trigger: "The static asset request fails or its JSON cannot be deserialized."
+    outcome: "The page does not catch the HTTP/JSON exception; it propagates through component initialization to Blazor's unhandled-error handling."
+    contract: "No page-specific error UI or retry contract is defined."
+    must_preserve: true
+  - source_loc: "Pages/Weather.razor:44"
+    trigger: "GetFromJsonAsync returns null."
+    outcome: "forecasts remains null and the loading branch continues to render."
+    contract: "No explicit null-result recovery is defined."
+    must_preserve: true
+concurrency:
+  model: "async component lifecycle using OnInitializedAsync"

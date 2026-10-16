@@ -1,0 +1,54 @@
+unit: bingo-home
+side_effects:
+  - source_loc: "Services/GameStateService.cs:60"
+    effect: "Reads the saved-game JSON from localStorage key social-bingo.game-state.v1 during first initialization."
+    must_preserve: true
+  - source_loc: "Services/GameStateService.cs:230"
+    effect: "Persists the complete card and HasWon state to the versioned localStorage key when creating the initial card, after a valid selection, and after a new game; restoring an existing saved card does not rewrite it."
+    must_preserve: true
+  - source_loc: "Services/GameStateService.cs:94"
+    effect: "Raises StateChanged after restoring or successfully persisting state; BingoBoard dispatches a render and unsubscribes on disposal."
+    must_preserve: true
+branches:
+  - source_loc: "Services/GameStateService.cs:66"
+    condition: "No saved-game value exists in localStorage."
+    behavior: "Create and persist a fresh 5x5 card with 24 fixed prompts and a selected, free center tile."
+    must_preserve: true
+  - source_loc: "Services/GameStateService.cs:82"
+    condition: "Saved JSON is malformed or does not satisfy card invariants."
+    behavior: "Throw InvalidDataException; BingoBoard shows an alert and an explicit action can replace the corrupt value with a new game."
+    must_preserve: true
+  - source_loc: "Services/GameStateService.cs:111"
+    condition: "A selected tile is free or the game has already been won."
+    behavior: "Return without changing or persisting state."
+    must_preserve: true
+  - source_loc: "Services/GameStateService.cs:117"
+    condition: "A valid non-free tile is selected and no win has locked the game."
+    behavior: "Toggle IsSelected, recompute rows, columns, and both diagonals, persist, and notify listeners."
+    must_preserve: true
+  - source_loc: "Services/GameStateService.cs:135"
+    condition: "The player activates New game."
+    behavior: "Create a fresh card, clear HasWon, persist, and notify listeners."
+    must_preserve: true
+  - source_loc: "Components/BingoBoard.razor:22"
+    condition: "Game.HasWon is true."
+    behavior: "Announce the win through the live status and disable every tile; the New game action remains available."
+    must_preserve: true
+error_paths:
+  - source_loc: "Services/GameStateService.cs:60"
+    trigger: "Browser storage read fails through JS interop."
+    outcome: "Convert the JS failure to InvalidOperationException; BingoBoard presents an alert."
+    contract: "InvalidOperationException from the service; role=alert in the page."
+    must_preserve: true
+  - source_loc: "Services/GameStateService.cs:230"
+    trigger: "Browser storage write fails through JS interop."
+    outcome: "Convert the JS failure to InvalidOperationException; selection/new-game changes are rolled back and BingoBoard presents an alert."
+    contract: "InvalidOperationException from the service; role=alert in the page."
+    must_preserve: true
+  - source_loc: "Services/GameStateService.cs:98"
+    trigger: "Selection uses a row or column outside the zero-based [0, 4] range, or service mutation occurs before initialization."
+    outcome: "Throw ArgumentOutOfRangeException for invalid coordinates or InvalidOperationException before initialization."
+    contract: "Service exception; the board passes only card coordinates and does not translate these argument errors."
+    must_preserve: true
+concurrency:
+  model: async event-loop; browser storage access and UI actions use asynchronous Blazor event handlers

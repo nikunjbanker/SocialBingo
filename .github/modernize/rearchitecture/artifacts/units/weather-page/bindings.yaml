@@ -1,0 +1,27 @@
+unit: weather-page
+bindings:
+  - type: route-declaration
+    name: "@page /weather"
+    source_loc: "Pages/Weather.razor:1"
+    target: "Pages.Weather"
+    must_appear_in_target: true
+    notes: "Routed using the shared App router and MainLayout."
+  - type: convention
+    name: "@inject HttpClient Http"
+    source_loc: "Pages/Weather.razor:2"
+    target: "Pages.Weather"
+    must_appear_in_target: true
+    notes: "Uses the scoped base-address client registered in Program.cs."
+  - type: di-registration
+    name: "AddScoped<HttpClient> with host environment base address"
+    source_loc: "Program.cs:10"
+    target: "Pages.Weather.Http"
+    must_appear_in_target: true
+    notes: "The client resolves base-relative static asset paths against the Blazor host URL."
+  - type: convention
+    name: "OnInitializedAsync"
+    source_loc: "Pages/Weather.razor:42"
+    target: "Pages.Weather"
+    must_appear_in_target: true
+    notes: "Loads sample-data/weather.json as a base-relative static asset."
+runtime_config: []

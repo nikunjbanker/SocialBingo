@@ -1,0 +1,10 @@
+unit: counter-page
+side_effects: []
+branches:
+  - source_loc: "Pages/Counter.razor:9"
+    condition: "The user activates the Click me button."
+    behavior: "Increment the component-local currentCount by one and render the updated value in the status paragraph."
+    must_preserve: true
+error_paths: []
+concurrency:
+  model: "sync UI event handler on the Blazor event loop"

@@ -1,0 +1,33 @@
+unit: bingo-home
+bindings:
+  - type: route-declaration
+    name: "@page /"
+    source_loc: "Pages/Home.razor:1"
+    target: "Pages.Home"
+    must_appear_in_target: true
+    notes: "Home route renders BingoBoard."
+  - type: di-registration
+    name: "AddScoped<IGameStateService, GameStateService>"
+    source_loc: "Program.cs:11"
+    target: "SocialBingo.Services.GameStateService"
+    must_appear_in_target: true
+    notes: "BingoBoard injects IGameStateService; the concrete service receives IJSRuntime from Blazor DI."
+  - type: convention
+    name: "@inject IGameStateService Game"
+    source_loc: "Components/BingoBoard.razor:3"
+    target: "Components.BingoBoard"
+    must_appear_in_target: true
+    notes: "The board initializes the service and routes tile and New Game actions through it."
+  - type: listener
+    name: "StateChanged subscription"
+    source_loc: "Components/BingoBoard.razor:59"
+    target: "Components.BingoBoard"
+    must_appear_in_target: true
+    notes: "Dispatch StateHasChanged through InvokeAsync and unsubscribe when the component is disposed."
+  - type: convention
+    name: "IJSRuntime localStorage calls"
+    source_loc: "Services/GameStateService.cs:60"
+    target: "GameStateService.InitializeAsync and PersistAsync"
+    must_appear_in_target: true
+    notes: "Uses browser localStorage.getItem/setItem with storage key social-bingo.game-state.v1."
+runtime_config: []

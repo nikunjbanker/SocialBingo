@@ -1,0 +1,11 @@
+unit: bingo-home
+commit: false
+candidate_splits:
+  - id: "Services/GameStateService.cs:230-245"
+    drivers: [concern_split]
+    rationale: >
+      Browser storage serialization and JS interop are a distinct persistence concern from card selection and win rules;
+      design may consider a storage adapter while preserving the current error and rollback contract.
+    source_slice:
+      file: Services/GameStateService.cs
+      lines: [230, 245]

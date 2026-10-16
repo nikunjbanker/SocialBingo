@@ -1,0 +1,2 @@
+flows: []
+reason: "No implicit state flow crosses externally triggered page units. Bingo state is written and read within bingo-home only; counter state is component-local."

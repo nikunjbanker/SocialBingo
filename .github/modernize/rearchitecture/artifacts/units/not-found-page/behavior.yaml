@@ -1,0 +1,14 @@
+unit: not-found-page
+side_effects: []
+branches:
+  - source_loc: "App.razor:1"
+    condition: "The router cannot match the current path to a routable component."
+    behavior: "Render Pages.NotFound through the Router's NotFoundPage parameter."
+    must_preserve: true
+  - source_loc: "Pages/NotFound.razor:1"
+    condition: "The page is rendered (as an unmatched-route fallback or through /not-found)."
+    behavior: "Display the Not Found heading and Sorry, the content you are looking for does not exist. message in MainLayout."
+    must_preserve: true
+error_paths: []
+concurrency:
+  model: "sync component rendering on the Blazor event loop"

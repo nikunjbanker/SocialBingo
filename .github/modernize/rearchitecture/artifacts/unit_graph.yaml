@@ -1,0 +1,96 @@
+units:
+  - name: bingo-home
+    trigger: page
+    trigger_detail: "Blazor route GET /"
+    source_anchors:
+      - path: Pages/Home.razor
+        line: 1
+      - path: Components/BingoBoard.razor
+      - path: Components/BingoBoard.razor.css
+      - path: Components/TileComponent.razor
+      - path: Components/TileComponent.razor.css
+      - path: Models/BingoCard.cs
+      - path: Models/BingoTile.cs
+      - path: Services/IGameStateService.cs
+      - path: Services/GameStateService.cs
+    exported_signature: []
+    dynamic_entrypoints:
+      - target: SocialBingo.Services.IGameStateService
+        mechanism: di
+        source_loc: Program.cs:11
+    depends_on: []
+    shared_refs:
+      - module: application-router
+        used_fields: [Router, NotFoundPage, DefaultLayout]
+      - module: main-layout
+        used_fields: [Body, NavMenu, AboutLink]
+      - module: navigation-menu
+        used_fields: [Bingo, Counter, Weather]
+      - module: webassembly-host-page
+        used_fields: [BaseHref, AppRoot, BlazorRuntimeScript]
+      - module: global-app-styles
+        used_fields: [ContentContainer]
+
+  - name: counter-page
+    trigger: page
+    trigger_detail: "Blazor route GET /counter"
+    source_anchors:
+      - path: Pages/Counter.razor
+        line: 1
+    exported_signature: []
+    dynamic_entrypoints: []
+    depends_on: []
+    shared_refs:
+      - module: application-router
+        used_fields: [Router, NotFoundPage, DefaultLayout]
+      - module: main-layout
+        used_fields: [Body, NavMenu, AboutLink]
+      - module: navigation-menu
+        used_fields: [Bingo, Counter, Weather]
+      - module: webassembly-host-page
+        used_fields: [BaseHref, AppRoot, BlazorRuntimeScript]
+      - module: global-app-styles
+        used_fields: [ContentContainer, PrimaryButton]
+
+  - name: weather-page
+    trigger: page
+    trigger_detail: "Blazor route GET /weather"
+    source_anchors:
+      - path: Pages/Weather.razor
+        line: 1
+      - path: wwwroot/sample-data/weather.json
+    exported_signature: []
+    dynamic_entrypoints: []
+    depends_on: []
+    shared_refs:
+      - module: application-router
+        used_fields: [Router, NotFoundPage, DefaultLayout]
+      - module: main-layout
+        used_fields: [Body, NavMenu, AboutLink]
+      - module: navigation-menu
+        used_fields: [Bingo, Counter, Weather]
+      - module: webassembly-host-page
+        used_fields: [BaseHref, AppRoot, BlazorRuntimeScript]
+      - module: global-app-styles
+        used_fields: [ContentContainer]
+
+  - name: not-found-page
+    trigger: page
+    trigger_detail: "Unmatched Blazor route (also directly addressable at /not-found)"
+    source_anchors:
+      - path: Pages/NotFound.razor
+        line: 1
+    exported_signature: []
+    dynamic_entrypoints: []
+    depends_on: []
+    shared_refs:
+      - module: application-router
+        used_fields: [Router, NotFoundPage, DefaultLayout]
+      - module: main-layout
+        used_fields: [Body, NavMenu, AboutLink]
+      - module: navigation-menu
+        used_fields: [Bingo, Counter, Weather]
+      - module: webassembly-host-page
+        used_fields: [BaseHref, AppRoot, BlazorRuntimeScript]
+      - module: global-app-styles
+        used_fields: [ContentContainer]

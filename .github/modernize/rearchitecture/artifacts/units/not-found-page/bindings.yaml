@@ -1,0 +1,21 @@
+unit: not-found-page
+bindings:
+  - type: route-declaration
+    name: "@page /not-found"
+    source_loc: "Pages/NotFound.razor:1"
+    target: "Pages.NotFound"
+    must_appear_in_target: true
+    notes: "The page is both directly addressable and the router's unmatched-route destination."
+  - type: route-declaration
+    name: "Router NotFoundPage"
+    source_loc: "App.razor:1"
+    target: "Pages.NotFound"
+    must_appear_in_target: true
+    notes: "Unmatched paths are routed to this component."
+  - type: convention
+    name: "@layout MainLayout"
+    source_loc: "Pages/NotFound.razor:2"
+    target: "Pages.NotFound"
+    must_appear_in_target: true
+    notes: "Uses the shared shell explicitly."
+runtime_config: []
