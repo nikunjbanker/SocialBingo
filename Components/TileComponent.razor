@@ -1,0 +1,67 @@
+<button type="button"
+        class="@TileClass"
+        aria-label="@AccessibleLabel"
+        aria-pressed="@(IsSelected ? "true" : "false")"
+        disabled="@IsUnavailable"
+        @onclick="HandleClick">
+    <span class="tile-content">@Label</span>
+    @if (IsFree)
+    {
+        <span class="tile-badge">Free space</span>
+    }
+    else if (IsSelected)
+    {
+        <span class="tile-badge">Selected</span>
+    }
+</button>
+
+@code {
+    [Parameter, EditorRequired]
+    public string Label { get; set; } = string.Empty;
+
+    [Parameter]
+    public bool IsSelected { get; set; }
+
+    [Parameter]
+    public bool IsFree { get; set; }
+
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    [Parameter]
+    public int Row { get; set; }
+
+    [Parameter]
+    public int Column { get; set; }
+
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+
+    private bool IsUnavailable => Disabled || IsFree;
+
+    private string TileClass => $"bingo-tile{(IsSelected ? " is-selected" : string.Empty)}{(IsFree ? " is-free" : string.Empty)}";
+
+    private string AccessibleLabel
+    {
+        get
+        {
+            var position = Row > 0 && Column > 0
+                ? $"Row {Row}, column {Column}: "
+                : string.Empty;
+            if (IsFree)
+            {
+                return $"{position}Free space.";
+            }
+
+            var state = IsSelected
+                ? " Selected."
+                : Disabled
+                    ? " Unavailable."
+                    : string.Empty;
+
+            return $"{position}{Label}{state}";
+        }
+    }
+
+    private Task HandleClick() => IsUnavailable ? Task.CompletedTask : OnClick.InvokeAsync();
+}

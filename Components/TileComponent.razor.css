@@ -1,0 +1,115 @@
+.bingo-tile {
+    --tile-bg: #ffffff;
+    --tile-fg: #172033;
+    --tile-border: #475569;
+    --tile-accent: #123b6b;
+    --tile-accent-fg: #ffffff;
+    --tile-free-bg: #fff3bf;
+    --tile-free-fg: #332600;
+    --tile-shadow: 0 2px 6px rgb(15 23 42 / 14%);
+
+    display: flex;
+    min-width: 0;
+    min-height: 5rem;
+    min-inline-size: 2.75rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border: 2px solid var(--tile-border);
+    border-radius: 0.5rem;
+    background-color: var(--tile-bg);
+    box-shadow: var(--tile-shadow);
+    color: var(--tile-fg);
+    font: inherit;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.bingo-tile:hover:not(:disabled) {
+    border-color: var(--tile-accent);
+    box-shadow: 0 5px 12px rgb(15 23 42 / 20%);
+    transform: translateY(-2px);
+}
+
+.bingo-tile:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+}
+
+.bingo-tile:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 3px;
+}
+
+.bingo-tile.is-selected {
+    border-color: var(--tile-accent);
+    background-color: var(--tile-accent);
+    color: var(--tile-accent-fg);
+}
+
+.bingo-tile.is-free {
+    border-color: #755500;
+    background-color: var(--tile-free-bg);
+    color: var(--tile-free-fg);
+    cursor: default;
+}
+
+.bingo-tile:disabled:not(.is-free) {
+    border-style: dashed;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.tile-content {
+    overflow-wrap: anywhere;
+}
+
+.tile-badge {
+    border-radius: 999px;
+    padding: 0.125rem 0.5rem;
+    background-color: rgb(255 255 255 / 20%);
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.is-free .tile-badge {
+    background-color: #332600;
+    color: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+    .bingo-tile {
+        --tile-bg: #1f2937;
+        --tile-fg: #f9fafb;
+        --tile-border: #a8b3c2;
+        --tile-accent: #9cc7ff;
+        --tile-accent-fg: #101b2b;
+        --tile-free-bg: #ffdf70;
+        --tile-free-fg: #241900;
+        --tile-shadow: 0 2px 6px rgb(0 0 0 / 35%);
+    }
+
+    .bingo-tile.is-free {
+        border-color: #ffe08a;
+    }
+
+    .bingo-tile:focus-visible {
+        outline-color: #9cc7ff;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bingo-tile {
+        transition: none;
+    }
+
+    .bingo-tile:hover:not(:disabled),
+    .bingo-tile:active:not(:disabled) {
+        transform: none;
+    }
+}

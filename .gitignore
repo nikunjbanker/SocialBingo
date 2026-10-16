@@ -1,0 +1,25 @@
+# Build output
+bin/
+obj/
+artifacts/
+publish/
+
+# Visual Studio and local IDE state
+.vs/
+.vscode/*
+!.vscode/extensions.json
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Test output
+TestResults/
+*.trx
+
+# NuGet
+*.nupkg
+*.snupkg
+
+# Local browser automation output
+.playwright-mcp/

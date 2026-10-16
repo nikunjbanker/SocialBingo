@@ -1,0 +1,95 @@
+@using SocialBingo.Services
+@implements IDisposable
+@inject IGameStateService Game
+
+<section class="bingo-game" aria-labelledby="bingo-title">
+    <header class="game-header">
+        <div>
+            <p class="eyebrow">Social Bingo</p>
+            <h1 id="bingo-title">Meet, mingle, and mark your card</h1>
+            <p class="game-instructions">Select a square when you find someone who matches its prompt. Complete a row, column, or diagonal to win.</p>
+        </div>
+        <button class="new-game-button" type="button" @onclick="StartNewGameAsync">
+            New game
+        </button>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(_errorMessage))
+    {
+        <div class="game-error" role="alert">
+            <p>@_errorMessage</p>
+            <button class="new-game-button" type="button" @onclick="StartNewGameAsync">
+                Start a new game and replace saved data
+            </button>
+        </div>
+    }
+    else if (Game.CurrentCard is { } card)
+    {
+        <p class="game-status" role="status" aria-live="polite" aria-atomic="true">
+            @(Game.HasWon
+                ? "Bingo! You completed a line. Start a new game to play again."
+                : "Your game is saved automatically in this browser.")
+        </p>
+
+        <div class="bingo-board" role="group" aria-label="Bingo card, five rows and five columns">
+            @foreach (var tile in card.Tiles)
+            {
+                <TileComponent @key="(tile.Row, tile.Column)"
+                               Label="@tile.Prompt"
+                               Row="@(tile.Row + 1)"
+                               Column="@(tile.Column + 1)"
+                               IsSelected="@tile.IsSelected"
+                               IsFree="@tile.IsFree"
+                               Disabled="@Game.HasWon"
+                               OnClick="@(() => SelectTileAsync(tile.Row, tile.Column))" />
+            }
+        </div>
+    }
+    else
+    {
+        <p class="game-status" role="status">Loading your bingo card…</p>
+    }
+</section>
+
+@code {
+    private string? _errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Game.StateChanged += OnGameStateChanged;
+        await RunGameActionAsync(Game.InitializeAsync);
+    }
+
+    private Task SelectTileAsync(int row, int column) =>
+        RunGameActionAsync(() => Game.SelectTileAsync(row, column));
+
+    private Task StartNewGameAsync() =>
+        RunGameActionAsync(Game.StartNewGameAsync);
+
+    private async Task RunGameActionAsync(Func<Task> action)
+    {
+        _errorMessage = null;
+        try
+        {
+            await action();
+        }
+        catch (JSException exception)
+        {
+            _errorMessage = $"The game could not be saved in this browser: {exception.Message}";
+        }
+        catch (InvalidDataException exception)
+        {
+            _errorMessage = exception.Message;
+        }
+        catch (InvalidOperationException exception)
+        {
+            _errorMessage = exception.Message;
+        }
+    }
+
+    private void OnGameStateChanged() =>
+        _ = InvokeAsync(StateHasChanged);
+
+    public void Dispose() =>
+        Game.StateChanged -= OnGameStateChanged;
+}

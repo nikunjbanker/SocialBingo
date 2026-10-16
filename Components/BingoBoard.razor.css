@@ -1,0 +1,145 @@
+.bingo-game {
+    --game-surface: #ffffff;
+    --game-text: #172033;
+    --game-muted: #334155;
+    --game-border: #cbd5e1;
+    --game-accent: #123b6b;
+    --game-accent-text: #ffffff;
+    --game-shadow: 0 12px 32px rgb(15 23 42 / 12%);
+
+    max-width: 62rem;
+    margin: 1rem auto;
+    padding: clamp(1rem, 4vw, 2.25rem);
+    border: 1px solid var(--game-border);
+    border-radius: 1rem;
+    background: var(--game-surface);
+    box-shadow: var(--game-shadow);
+    color: var(--game-text);
+}
+
+.game-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+    margin: 0 0 0.35rem;
+    color: var(--game-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    line-height: 1.15;
+}
+
+.game-instructions {
+    max-width: 42rem;
+    margin: 0.75rem 0 0;
+    color: var(--game-muted);
+    line-height: 1.6;
+}
+
+.new-game-button {
+    flex: 0 0 auto;
+    min-height: 2.75rem;
+    padding: 0.65rem 1rem;
+    border: 2px solid var(--game-accent);
+    border-radius: 0.5rem;
+    background: var(--game-accent);
+    color: var(--game-accent-text);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.new-game-button:hover {
+    box-shadow: 0 4px 10px rgb(15 23 42 / 20%);
+    transform: translateY(-1px);
+}
+
+.new-game-button:active {
+    transform: translateY(0);
+}
+
+.new-game-button:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 3px;
+}
+
+.game-status {
+    margin: 0 0 1rem;
+    color: var(--game-muted);
+    line-height: 1.5;
+}
+
+.bingo-board {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(0.35rem, 1.5vw, 0.75rem);
+}
+
+.game-error {
+    border-inline-start: 4px solid #9b1c1c;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #fff1f0;
+    color: #5f1010;
+}
+
+.game-error p {
+    margin: 0 0 1rem;
+    line-height: 1.5;
+}
+
+@media (prefers-color-scheme: dark) {
+    .bingo-game {
+        --game-surface: #111827;
+        --game-text: #f9fafb;
+        --game-muted: #e2e8f0;
+        --game-border: #64748b;
+        --game-accent: #9cc7ff;
+        --game-accent-text: #101b2b;
+        --game-shadow: 0 12px 32px rgb(0 0 0 / 35%);
+    }
+
+    .new-game-button:focus-visible {
+        outline-color: #9cc7ff;
+    }
+
+    .game-error {
+        border-color: #ff9b9b;
+        background: #3b1717;
+        color: #ffe4e4;
+    }
+}
+
+@media (max-width: 40rem) {
+    .game-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .bingo-board {
+        gap: 0.3rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .new-game-button {
+        transition: none;
+    }
+
+    .new-game-button:hover,
+    .new-game-button:active {
+        transform: none;
+    }
+}
