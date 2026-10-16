@@ -1,7 +1,8 @@
---- 
-description: Generates a structured session summary of changes, modified components, and test results for PR creation. 
---- 
-
+---
+name: ship
+description: "Generates a structured session summary of changes, modified components, and test results for PR creation."
+disable-model-invocation: true
+---
 # Prompt: Custom /ship Session Summary 
 
 Summarize all work completed in the current session. 
